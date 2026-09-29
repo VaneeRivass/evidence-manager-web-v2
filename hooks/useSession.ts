@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useRouter } from 'next/navigation'
 import { api } from '@/lib/api'
 import type { LoginInput, RegisterInput } from '@/lib/schemas'
 
@@ -33,5 +34,20 @@ export function useRegister() {
   return useMutation({
     mutationFn: (input: RegisterInput) =>
       api.post<Session>('/api/auth/register', input),
+  })
+}
+
+// RF-04 · the API clears the cookie; the client drops what it cached and goes
+// back to the start. A full navigation to /login also re-runs the middleware.
+export function useLogout() {
+  const router = useRouter()
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: () => api.post<void>('/api/auth/logout'),
+    onSuccess: () => {
+      queryClient.clear()
+      router.replace('/login')
+    },
   })
 }
