@@ -1,26 +1,37 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
+/*
+ * Palette and typography of docs/maqueta.html, the application's design.
+ * Defined as Tailwind v4 theme tokens, so they become utilities:
+ * bg-brand, text-ink, border-line, text-positive, font-mono, ...
+ */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --font-sans: var(--font-plus-jakarta), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-brand: #4f68f1;
+  --color-brand-soft: #eceffe;
+  --color-brand-strong: #2f45c4;
+
+  --color-positive: #00bb9c;
+  --color-positive-soft: #e0f6f2;
+  --color-positive-strong: #007a66;
+
+  --color-ink: #161c2d;
+  --color-slate-ink: #3e4675;
+  --color-muted: #666e94;
+  --color-line: #e3e6ee;
+  --color-canvas: #f8f9f9;
+  --color-card: #ffffff;
+
+  --color-warning: #fab446;
+  --color-danger: #c8414b;
+  --color-danger-soft: #fbeced;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
 }
