@@ -1,6 +1,6 @@
 'use client'
 
-import { AlertTriangle, CheckCircle2, Download, Upload } from 'lucide-react'
+import { AlertTriangle, CheckCircle2, Download, Loader2, Upload } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { FileChip } from '@/components/cases/FileChip'
 import { useDownloadEvidence, useUploadEvidence } from '@/hooks/useFileUpload'
@@ -89,6 +89,12 @@ export function EvidencePanel({ caseItem }: { caseItem: Case }) {
 
   if (busy) {
     const percent = Math.round(progress * 100)
+    const message =
+      phase === 'requesting'
+        ? 'Preparando la subida…'
+        : phase === 'confirming'
+          ? 'El servidor está verificando el archivo…'
+          : `Subiendo… ${percent} %`
 
     return (
       <div className="grid gap-2.5 rounded-2xl border border-line p-3.5">
@@ -108,11 +114,17 @@ export function EvidencePanel({ caseItem }: { caseItem: Case }) {
             style={{ width: `${percent}%` }}
           />
         </div>
-        <p className="text-[12.5px] text-muted">
-          {phase === 'confirming'
-            ? 'El servidor está verificando el archivo…'
-            : 'No cierres esta pestaña hasta que termine.'}
+        <p className="flex items-center gap-2 text-[12.5px] text-slate-ink">
+          {phase !== 'uploading' ? (
+            <Loader2 className="size-3.5 shrink-0 animate-spin text-brand" />
+          ) : null}
+          {message}
         </p>
+        {phase === 'uploading' ? (
+          <p className="text-[12px] text-muted">
+            No cierres esta pestaña hasta que termine.
+          </p>
+        ) : null}
       </div>
     )
   }
