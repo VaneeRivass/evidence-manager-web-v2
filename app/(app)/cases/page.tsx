@@ -31,14 +31,16 @@ export default function CasesPage() {
             </p>
           ) : null}
         </div>
-        <button
-          type="button"
-          onClick={() => setCreateOpen(true)}
-          className="inline-flex items-center gap-2 rounded-full bg-brand px-4 py-2 text-[13px] font-semibold text-white shadow-[0_6px_16px_rgba(79,104,241,.28)] transition hover:bg-brand-strong"
-        >
-          <Plus className="size-4" />
-          Nuevo caso
-        </button>
+        {data && data.items.length === 0 ? null : (
+          <button
+            type="button"
+            onClick={() => setCreateOpen(true)}
+            className="inline-flex items-center gap-2 rounded-full bg-brand px-4 py-2 text-[13px] font-semibold text-white shadow-[0_6px_16px_rgba(79,104,241,.28)] transition hover:bg-brand-strong"
+          >
+            <Plus className="size-4" />
+            Nuevo caso
+          </button>
+        )}
       </div>
 
       <div className="mt-5">

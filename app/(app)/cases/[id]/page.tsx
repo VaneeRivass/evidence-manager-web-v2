@@ -100,10 +100,10 @@ export default function CaseDetailPage() {
                 </div>
               </div>
 
-              <h1 className="break-words text-[26px] font-extrabold leading-tight tracking-tight">
+              <h1 className="[overflow-wrap:anywhere] text-[26px] font-extrabold leading-tight tracking-tight">
                 {item.title}
               </h1>
-              <p className="max-w-[62ch] break-words leading-relaxed text-slate-ink">
+              <p className="max-w-[62ch] [overflow-wrap:anywhere] leading-relaxed text-slate-ink">
                 {item.description}
               </p>
               <div className="flex flex-wrap gap-4 border-t border-line pt-3.5 text-[12.5px] text-muted">
