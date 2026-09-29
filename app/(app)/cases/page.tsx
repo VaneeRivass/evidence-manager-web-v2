@@ -1,6 +1,8 @@
 'use client'
 
+import { Plus } from 'lucide-react'
 import { useState } from 'react'
+import { CaseFormDialog } from '@/components/cases/CaseFormDialog'
 import { CasesEmpty } from '@/components/cases/CasesEmpty'
 import { CasesError } from '@/components/cases/CasesError'
 import { CasesFilters } from '@/components/cases/CasesFilters'
@@ -14,6 +16,7 @@ import type { CaseStatus } from '@/lib/schemas'
 export default function CasesPage() {
   const [status, setStatus] = useState<CaseStatus | undefined>(undefined)
   const [sort, setSort] = useState<CasesSort>('updatedAt')
+  const [createOpen, setCreateOpen] = useState(false)
 
   const { data, isPending, isError, error, refetch } = useCases({ status, sort })
 
@@ -28,6 +31,14 @@ export default function CasesPage() {
             </p>
           ) : null}
         </div>
+        <button
+          type="button"
+          onClick={() => setCreateOpen(true)}
+          className="inline-flex items-center gap-2 rounded-full bg-brand px-4 py-2 text-[13px] font-semibold text-white shadow-[0_6px_16px_rgba(79,104,241,.28)] transition hover:bg-brand-strong"
+        >
+          <Plus className="size-4" />
+          Nuevo caso
+        </button>
       </div>
 
       <div className="mt-5">
@@ -44,10 +55,14 @@ export default function CasesPage() {
 
         {isError ? <CasesError error={error} onRetry={() => refetch()} /> : null}
 
-        {data && data.items.length === 0 ? <CasesEmpty status={status} /> : null}
+        {data && data.items.length === 0 ? (
+          <CasesEmpty status={status} onCreate={() => setCreateOpen(true)} />
+        ) : null}
 
         {data && data.items.length > 0 ? <CaseTable cases={data.items} /> : null}
       </div>
+
+      <CaseFormDialog open={createOpen} onClose={() => setCreateOpen(false)} />
     </main>
   )
 }

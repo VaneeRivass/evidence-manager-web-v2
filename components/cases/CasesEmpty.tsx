@@ -2,7 +2,8 @@ import { FolderPlus } from 'lucide-react'
 import type { CaseStatus } from '@/lib/schemas'
 
 // The empty state explains there is nothing and offers to create the first one.
-// With a filter on, the text names the filter (RF-15).
+// With a filter on, the text names the filter and the button is not offered
+// (RF-15).
 function copyFor(status?: CaseStatus): { title: string; text: string } {
   if (status === 'OPEN') {
     return {
@@ -22,7 +23,13 @@ function copyFor(status?: CaseStatus): { title: string; text: string } {
   }
 }
 
-export function CasesEmpty({ status }: { status?: CaseStatus }) {
+export function CasesEmpty({
+  status,
+  onCreate,
+}: {
+  status?: CaseStatus
+  onCreate?: () => void
+}) {
   const copy = copyFor(status)
 
   return (
@@ -32,6 +39,16 @@ export function CasesEmpty({ status }: { status?: CaseStatus }) {
       </span>
       <h3 className="text-[17px] font-bold text-ink">{copy.title}</h3>
       <p className="max-w-[46ch] text-[13px] text-muted">{copy.text}</p>
+      {onCreate && !status ? (
+        <button
+          type="button"
+          onClick={onCreate}
+          className="mt-2 inline-flex items-center gap-2 rounded-full bg-brand px-4 py-2 text-[13px] font-semibold text-white transition hover:bg-brand-strong"
+        >
+          <FolderPlus className="size-4" />
+          Crear mi primer caso
+        </button>
+      ) : null}
     </div>
   )
 }
