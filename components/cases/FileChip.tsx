@@ -1,18 +1,35 @@
 import { formatBytes } from '@/lib/format'
 
-// A small badge for the file type, so a PDF and an image are told apart at a
-// glance without an icon library for every MIME type.
-function badgeFor(type: string | null): { text: string; className: string } {
+// The document icon of the design: a coloured page with the top-right corner
+// folded (clip-path), and the type at the bottom.
+function iconFor(type: string | null): { label: string; color: string } {
   if (type === 'application/pdf') {
-    return { text: 'PDF', className: 'bg-danger/10 text-danger' }
+    return { label: 'PDF', color: '#c8414b' }
   }
   if (type === 'image/png') {
-    return { text: 'PNG', className: 'bg-positive-soft text-positive-strong' }
+    return { label: 'PNG', color: '#00bb9c' }
   }
   if (type === 'image/jpeg') {
-    return { text: 'JPG', className: 'bg-positive-soft text-positive-strong' }
+    return { label: 'JPG', color: '#00bb9c' }
   }
-  return { text: 'DOC', className: 'bg-line text-muted' }
+  return { label: 'DOC', color: '#3e4675' }
+}
+
+export function FileIcon({ type }: { type: string | null }) {
+  const { label, color } = iconFor(type)
+
+  return (
+    <span
+      aria-hidden
+      className="flex h-8 w-[26px] shrink-0 items-end justify-center rounded-[4px] pb-1 text-[8.5px] font-extrabold text-white"
+      style={{
+        clipPath: 'polygon(0 0, 66% 0, 100% 27%, 100% 100%, 0 100%)',
+        background: `linear-gradient(225deg, rgba(255,255,255,.5) 0 19%, transparent 19%), ${color}`,
+      }}
+    >
+      {label}
+    </span>
+  )
 }
 
 export function FileChip({
@@ -28,17 +45,15 @@ export function FileChip({
     return <span className="text-[13px] text-muted/70">Sin evidencia</span>
   }
 
-  const badge = badgeFor(type)
-
   return (
-    <span className="inline-flex items-center gap-2 text-[13px]">
-      <span
-        className={`grid h-6 w-5 shrink-0 place-items-center rounded text-[9px] font-extrabold ${badge.className}`}
-      >
-        {badge.text}
-      </span>
-      <span className="max-w-[18ch] truncate">{name}</span>
-      {size !== null ? <span className="text-muted">{formatBytes(size)}</span> : null}
+    <span className="inline-flex min-w-0 items-center gap-2 text-[13px]">
+      <FileIcon type={type} />
+      <span className="min-w-0 truncate">{name}</span>
+      {size !== null ? (
+        <span className="shrink-0 whitespace-nowrap text-muted">
+          {formatBytes(size)}
+        </span>
+      ) : null}
     </span>
   )
 }
