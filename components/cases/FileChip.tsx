@@ -46,7 +46,7 @@ export function FileChip({
   }
 
   return (
-    <span className="inline-flex min-w-0 items-center gap-2 text-[13px]">
+    <span className="inline-flex max-w-full min-w-0 items-center gap-2 text-[13px]">
       <FileIcon type={type} />
       <span className="min-w-0 truncate">{name}</span>
       {size !== null ? (
