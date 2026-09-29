@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { CaseStatusPill } from '@/components/cases/CaseStatusPill'
 import { FileChip } from '@/components/cases/FileChip'
+import { Button } from '@/components/common/Button'
 import { Modal } from '@/components/common/Modal'
 import { useDeleteCase } from '@/hooks/useCases'
 import { ApiError } from '@/lib/api'
@@ -71,21 +72,17 @@ export function DeleteCaseDialog({
         </p>
 
         <div className="flex justify-end gap-2">
-          <button
-            type="button"
-            onClick={onClose}
-            className="rounded-full border border-line bg-card px-4 py-2 text-[13px] font-semibold text-ink transition hover:border-brand"
-          >
+          <Button type="button" variant="outline" onClick={onClose}>
             Cancelar
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
+            variant="danger"
             onClick={onConfirm}
             disabled={deleteCase.isPending}
-            className="rounded-full bg-danger px-4 py-2 text-[13px] font-semibold text-white transition hover:opacity-90 disabled:opacity-60"
           >
             Eliminar caso y archivo
-          </button>
+          </Button>
         </div>
       </div>
     </Modal>

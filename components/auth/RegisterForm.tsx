@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { AuthField } from '@/components/auth/AuthField'
+import { Button } from '@/components/common/Button'
 import { useRegister } from '@/hooks/useSession'
 import { applyApiError } from '@/lib/form'
 import { registerSchema, type RegisterInput } from '@/lib/schemas'
@@ -65,13 +66,9 @@ export function RegisterForm() {
         </p>
       ) : null}
 
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="rounded-full bg-brand px-5 py-2.5 text-sm font-semibold text-white shadow-[0_6px_16px_rgba(79,104,241,.28)] transition hover:bg-brand-strong disabled:opacity-60"
-      >
+      <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
         Crear cuenta
-      </button>
+      </Button>
 
       <p className="text-center text-sm text-muted">
         ¿Ya tienes cuenta?{' '}

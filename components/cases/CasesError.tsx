@@ -1,4 +1,5 @@
 import { CloudOff, RotateCw } from 'lucide-react'
+import { Button } from '@/components/common/Button'
 import { ApiError } from '@/lib/api'
 
 // The error state: the API code in sight and a button to retry. Never a blank
@@ -25,14 +26,10 @@ export function CasesError({
       <code className="rounded-md bg-canvas px-2 py-0.5 font-mono text-[11.5px] text-slate-ink">
         {code}
       </code>
-      <button
-        type="button"
-        onClick={onRetry}
-        className="mt-1 inline-flex items-center gap-2 rounded-full border border-line bg-card px-4 py-2 text-[13px] font-semibold text-ink transition hover:border-brand"
-      >
+      <Button type="button" variant="outline" className="mt-1" onClick={onRetry}>
         <RotateCw className="size-4" />
         Reintentar
-      </button>
+      </Button>
     </div>
   )
 }

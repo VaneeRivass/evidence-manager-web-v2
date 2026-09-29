@@ -8,6 +8,7 @@ import { CasesError } from '@/components/cases/CasesError'
 import { CasesFilters } from '@/components/cases/CasesFilters'
 import { CaseTable } from '@/components/cases/CaseTable'
 import { CaseTableSkeleton } from '@/components/cases/CaseTableSkeleton'
+import { Button } from '@/components/common/Button'
 import { useCases, type CasesSort } from '@/hooks/useCases'
 import type { CaseStatus } from '@/lib/schemas'
 
@@ -48,14 +49,10 @@ export default function CasesPage() {
         {/* With an empty list the CTA lives in the empty state, so the header
             does not offer a second way to create (matches the design). */}
         {isEmpty ? null : (
-          <button
-            type="button"
-            onClick={() => setCreateOpen(true)}
-            className="inline-flex items-center gap-2 rounded-full bg-brand px-4 py-2 text-[13px] font-semibold text-white shadow-[0_6px_16px_rgba(79,104,241,.28)] transition hover:bg-brand-strong"
-          >
+          <Button type="button" onClick={() => setCreateOpen(true)}>
             <Plus className="size-4" />
             Nuevo caso
-          </button>
+          </Button>
         )}
       </div>
 

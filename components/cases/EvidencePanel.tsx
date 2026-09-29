@@ -4,6 +4,7 @@ import { AlertTriangle, CheckCircle2, Download, Loader2, Upload } from 'lucide-r
 import { useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { FileChip } from '@/components/cases/FileChip'
+import { Button } from '@/components/common/Button'
 import { useDownloadEvidence, useUploadEvidence } from '@/hooks/useFileUpload'
 import { ApiError } from '@/lib/api'
 import { validateEvidenceFile } from '@/lib/files'
@@ -79,15 +80,15 @@ export function EvidencePanel({ caseItem }: { caseItem: Case }) {
             <CheckCircle2 className="size-3.5" />
             Verificada
           </span>
-          <button
+          <Button
             type="button"
+            className="ml-auto"
             onClick={download}
             disabled={downloading}
-            className="ml-auto inline-flex items-center gap-2 rounded-full bg-brand px-4 py-2 text-[13px] font-semibold text-white transition hover:bg-brand-strong disabled:opacity-60"
           >
             <Download className="size-4" />
             Descargar
-          </button>
+          </Button>
         </div>
         <p className="text-[12.5px] text-muted">
           Cada caso guarda un único archivo y no se puede reemplazar.
@@ -147,24 +148,20 @@ export function EvidencePanel({ caseItem }: { caseItem: Case }) {
           Una vez adjuntado no se podrá cambiar por otro archivo.
         </p>
         <div className="flex justify-end gap-2">
-          <button
+          <Button
             type="button"
+            variant="outline"
             onClick={() => {
               setSelected(null)
               setFieldError(null)
             }}
-            className="rounded-full border border-line bg-card px-4 py-2 text-[13px] font-semibold text-ink transition hover:border-brand"
           >
             Elegir otro
-          </button>
-          <button
-            type="button"
-            onClick={attach}
-            className="inline-flex items-center gap-2 rounded-full bg-brand px-4 py-2 text-[13px] font-semibold text-white transition hover:bg-brand-strong"
-          >
+          </Button>
+          <Button type="button" onClick={attach}>
             <Upload className="size-4" />
             Adjuntar
-          </button>
+          </Button>
         </div>
       </div>
     )

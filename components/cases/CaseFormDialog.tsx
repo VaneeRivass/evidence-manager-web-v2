@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
+import { Button } from '@/components/common/Button'
 import { Field, fieldClass } from '@/components/common/Field'
 import { Modal } from '@/components/common/Modal'
 import { useCreateCase, useUpdateCase } from '@/hooks/useCases'
@@ -111,20 +112,12 @@ export function CaseFormDialog({
         ) : null}
 
         <div className="flex justify-end gap-2">
-          <button
-            type="button"
-            onClick={onClose}
-            className="rounded-full border border-line bg-card px-4 py-2 text-[13px] font-semibold text-ink transition hover:border-brand"
-          >
+          <Button type="button" variant="outline" onClick={onClose}>
             Cancelar
-          </button>
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="rounded-full bg-brand px-4 py-2 text-[13px] font-semibold text-white transition hover:bg-brand-strong disabled:opacity-60"
-          >
+          </Button>
+          <Button type="submit" disabled={isSubmitting}>
             {isEdit ? 'Guardar cambios' : 'Crear caso'}
-          </button>
+          </Button>
         </div>
       </form>
     </Modal>

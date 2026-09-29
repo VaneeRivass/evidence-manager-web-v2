@@ -1,4 +1,5 @@
 import { FolderPlus } from 'lucide-react'
+import { Button } from '@/components/common/Button'
 import type { CaseStatus } from '@/lib/schemas'
 
 // The empty state explains there is nothing and offers to create the first one.
@@ -40,14 +41,10 @@ export function CasesEmpty({
       <h3 className="text-[17px] font-bold text-ink">{copy.title}</h3>
       <p className="max-w-[46ch] text-[13px] text-muted">{copy.text}</p>
       {onCreate && !status ? (
-        <button
-          type="button"
-          onClick={onCreate}
-          className="mt-2 inline-flex items-center gap-2 rounded-full bg-brand px-4 py-2 text-[13px] font-semibold text-white transition hover:bg-brand-strong"
-        >
+        <Button type="button" className="mt-2" onClick={onCreate}>
           <FolderPlus className="size-4" />
           Crear mi primer caso
-        </button>
+        </Button>
       ) : null}
     </div>
   )

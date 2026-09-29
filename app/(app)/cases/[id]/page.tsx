@@ -9,12 +9,10 @@ import { CaseStatusPill } from '@/components/cases/CaseStatusPill'
 import { CasesError } from '@/components/cases/CasesError'
 import { DeleteCaseDialog } from '@/components/cases/DeleteCaseDialog'
 import { EvidencePanel } from '@/components/cases/EvidencePanel'
+import { Button } from '@/components/common/Button'
 import { useCase } from '@/hooks/useCase'
 import { useUpdateCase } from '@/hooks/useCases'
 import { formatRelative } from '@/lib/format'
-
-const actionButton =
-  'inline-flex items-center gap-1.5 rounded-full border border-line bg-card px-3.5 py-1.5 text-[13px] font-semibold text-ink transition hover:border-brand disabled:opacity-60'
 
 // /cases/[id] · the detail screen. It reads one case, and from here a person
 // edits it, changes its state or deletes it. Attaching evidence arrives in
@@ -48,16 +46,19 @@ export default function CaseDetailPage() {
             <div className="flex flex-wrap items-center justify-between gap-2">
               <CaseStatusPill status={item.status} />
               <div className="flex flex-wrap gap-2">
-                <button
+                <Button
                   type="button"
+                  variant="outline"
+                  size="sm"
                   onClick={() => setEditOpen(true)}
-                  className={actionButton}
                 >
                   <Pencil className="size-4" />
                   Editar
-                </button>
-                <button
+                </Button>
+                <Button
                   type="button"
+                  variant="outline"
+                  size="sm"
                   disabled={updateCase.isPending}
                   onClick={() =>
                     updateCase.mutate({
@@ -67,7 +68,6 @@ export default function CaseDetailPage() {
                       },
                     })
                   }
-                  className={actionButton}
                 >
                   {item.status === 'OPEN' ? (
                     <>
@@ -80,15 +80,16 @@ export default function CaseDetailPage() {
                       Reabrir
                     </>
                   )}
-                </button>
-                <button
+                </Button>
+                <Button
                   type="button"
+                  variant="dangerOutline"
+                  size="sm"
                   onClick={() => setDeleteOpen(true)}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-danger/40 bg-card px-3.5 py-1.5 text-[13px] font-semibold text-danger transition hover:border-danger"
                 >
                   <Trash2 className="size-4" />
                   Eliminar
-                </button>
+                </Button>
               </div>
             </div>
 
