@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { Field, fieldClass } from '@/components/common/Field'
 import { Modal } from '@/components/common/Modal'
 import { useCreateCase, useUpdateCase } from '@/hooks/useCases'
@@ -56,10 +57,12 @@ export function CaseFormDialog({
       if (caseToEdit) {
         await updateCase.mutateAsync({ id: caseToEdit.id, input: values })
         onClose()
+        toast.success('Cambios guardados')
       } else {
         const created = await createCase.mutateAsync(values)
         onClose()
         router.push(`/cases/${created.id}`)
+        toast.success('Caso creado')
       }
     } catch (error) {
       applyApiError(error, setError)

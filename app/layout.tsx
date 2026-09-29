@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { JetBrains_Mono, Plus_Jakarta_Sans } from 'next/font/google'
+import { Toaster } from 'sonner'
 import { Providers } from './providers'
 import './globals.css'
 
@@ -26,6 +27,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
     >
       <body className="min-h-full flex flex-col">
         <Providers>{children}</Providers>
+        <Toaster position="bottom-right" richColors closeButton />
       </body>
     </html>
   )

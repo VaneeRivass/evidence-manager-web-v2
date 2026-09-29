@@ -2,10 +2,13 @@
 
 import { Trash2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 import { CaseStatusPill } from '@/components/cases/CaseStatusPill'
 import { FileChip } from '@/components/cases/FileChip'
 import { Modal } from '@/components/common/Modal'
 import { useDeleteCase } from '@/hooks/useCases'
+import { ApiError } from '@/lib/api'
+import { errorMessage } from '@/lib/messages.es'
 import type { Case } from '@/lib/schemas'
 
 // RF-20 · the confirmation names what is lost — the case and, if there is one,
@@ -27,10 +30,15 @@ export function DeleteCaseDialog({
     try {
       await deleteCase.mutateAsync(caseToDelete.id)
       onClose()
+      toast.success('Caso eliminado')
       router.push('/cases')
-    } catch {
-      // Failure notices belong to WEB #9; for now the dialog simply stays open.
+    } catch (error) {
       onClose()
+      toast.error(
+        error instanceof ApiError
+          ? errorMessage(error.code, error.params)
+          : 'No pudimos eliminar el caso. Inténtalo de nuevo.',
+      )
     }
   }
 

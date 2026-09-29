@@ -2,6 +2,7 @@
 
 import { AlertTriangle, CheckCircle2, Download, Loader2, Upload } from 'lucide-react'
 import { useRef, useState } from 'react'
+import { toast } from 'sonner'
 import { FileChip } from '@/components/cases/FileChip'
 import { useDownloadEvidence, useUploadEvidence } from '@/hooks/useFileUpload'
 import { ApiError } from '@/lib/api'
@@ -12,11 +13,13 @@ import type { Case } from '@/lib/schemas'
 // The evidence of one case, as the design shows it: a drop zone that becomes a
 // chosen file, then a single progress bar, then the verified file. To the person
 // it is one action; behind it are three calls (RF-17).
+//
+// Validation errors stay next to the zone (they are the person's to fix, RF-18);
+// operation errors become a floating notice with a retry (RF-19).
 export function EvidencePanel({ caseItem }: { caseItem: Case }) {
   const inputRef = useRef<HTMLInputElement>(null)
   const [selected, setSelected] = useState<File | null>(null)
   const [fieldError, setFieldError] = useState<string | null>(null)
-  const [operationError, setOperationError] = useState<string | null>(null)
   const [dragging, setDragging] = useState(false)
 
   const { start, phase, progress } = useUploadEvidence(caseItem.id)
@@ -25,7 +28,6 @@ export function EvidencePanel({ caseItem }: { caseItem: Case }) {
   const busy = phase !== 'idle'
 
   const choose = (file: File | undefined) => {
-    setOperationError(null)
     if (!file) {
       return
     }
@@ -43,17 +45,21 @@ export function EvidencePanel({ caseItem }: { caseItem: Case }) {
     if (!selected) {
       return
     }
-    setOperationError(null)
     const result = await start(selected)
     if (result.ok) {
       setSelected(null)
-    } else {
-      setOperationError(
-        result.error instanceof ApiError
-          ? errorMessage(result.error.code, result.error.params)
-          : errorMessage('UPLOAD_FAILED'),
-      )
+      toast.success('Evidencia adjuntada', {
+        description: 'El archivo ya está en el caso.',
+      })
+      return
     }
+    const message =
+      result.error instanceof ApiError
+        ? errorMessage(result.error.code, result.error.params)
+        : errorMessage('UPLOAD_FAILED')
+    toast.error(message, {
+      action: { label: 'Reintentar', onClick: () => void attach() },
+    })
   }
 
   // A case that already holds a file: show it verified, with a download button.
@@ -137,11 +143,6 @@ export function EvidencePanel({ caseItem }: { caseItem: Case }) {
           <AlertTriangle className="size-4 shrink-0 text-warning" />
           Una vez adjuntado no se podrá cambiar por otro archivo.
         </p>
-        {operationError ? (
-          <p className="rounded-xl bg-danger-soft px-3 py-2 text-[13px] text-danger">
-            {operationError}
-          </p>
-        ) : null}
         <div className="flex justify-end gap-2">
           <button
             type="button"
@@ -215,12 +216,6 @@ export function EvidencePanel({ caseItem }: { caseItem: Case }) {
         <p className="flex items-center gap-2 text-[13px] text-danger">
           <AlertTriangle className="size-4 shrink-0" />
           {fieldError}
-        </p>
-      ) : null}
-
-      {operationError ? (
-        <p className="rounded-xl bg-danger-soft px-3 py-2 text-[13px] text-danger">
-          {operationError}
         </p>
       ) : null}
     </div>
