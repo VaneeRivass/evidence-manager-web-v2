@@ -27,7 +27,24 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
     >
       <body className="min-h-full flex flex-col">
         <Providers>{children}</Providers>
-        <Toaster position="bottom-right" richColors closeButton />
+        <Toaster
+          position="bottom-right"
+          closeButton
+          theme="light"
+          toastOptions={{
+            classNames: {
+              toast:
+                'rounded-2xl border border-line bg-card text-ink shadow-[0_16px_40px_rgba(22,28,45,.16)]',
+              title: 'text-[13.5px] font-semibold text-ink',
+              description: 'text-[12.5px] text-muted',
+              actionButton:
+                'rounded-full bg-brand px-3 py-1.5 text-[12px] font-semibold text-white',
+              cancelButton:
+                'rounded-full border border-line bg-card px-3 py-1.5 text-[12px] font-semibold text-ink',
+              closeButton: 'border-line bg-card text-muted',
+            },
+          }}
+        />
       </body>
     </html>
   )

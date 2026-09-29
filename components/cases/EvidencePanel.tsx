@@ -53,11 +53,14 @@ export function EvidencePanel({ caseItem }: { caseItem: Case }) {
       })
       return
     }
+    const code =
+      result.error instanceof ApiError ? result.error.code : 'UPLOAD_FAILED'
     const message =
       result.error instanceof ApiError
         ? errorMessage(result.error.code, result.error.params)
         : errorMessage('UPLOAD_FAILED')
     toast.error(message, {
+      description: <span className="font-mono text-[11px]">{code}</span>,
       action: { label: 'Reintentar', onClick: () => void attach() },
     })
   }
