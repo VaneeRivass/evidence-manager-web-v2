@@ -8,7 +8,7 @@ import { CaseFormDialog } from '@/components/cases/CaseFormDialog'
 import { CaseStatusPill } from '@/components/cases/CaseStatusPill'
 import { CasesError } from '@/components/cases/CasesError'
 import { DeleteCaseDialog } from '@/components/cases/DeleteCaseDialog'
-import { FileChip } from '@/components/cases/FileChip'
+import { EvidencePanel } from '@/components/cases/EvidencePanel'
 import { useCase } from '@/hooks/useCase'
 import { useUpdateCase } from '@/hooks/useCases'
 import { formatRelative } from '@/lib/format'
@@ -114,19 +114,9 @@ export default function CaseDetailPage() {
             </div>
           </section>
 
-          <section className="grid min-w-0 gap-4 rounded-3xl border border-line bg-card p-6">
+          <section className="grid min-w-0 gap-4 self-start rounded-3xl border border-line bg-card p-6">
             <h2 className="text-[15px] font-bold">Evidencia</h2>
-            {item.fileName ? (
-              <FileChip
-                name={item.fileName}
-                size={item.fileSize}
-                type={item.fileType}
-              />
-            ) : (
-              <p className="text-[13px] text-muted">
-                Todavía sin evidencia. Se adjunta en el siguiente paso.
-              </p>
-            )}
+            <EvidencePanel caseItem={item} />
           </section>
         </div>
 

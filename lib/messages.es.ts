@@ -41,6 +41,22 @@ export function errorMessage(code: string, params?: Params): string {
       return `El contenido supera el máximo de ${String(params?.max ?? '')} bytes.`
     case 'INTERNAL_ERROR':
       return 'Algo falló en el servidor. Inténtalo de nuevo.'
+    case 'FILE_ALREADY_ATTACHED':
+      return 'Este caso ya tiene una evidencia adjunta y no se puede reemplazar.'
+    case 'FILE_TYPE_NOT_ALLOWED':
+      return 'Formato no admitido. Solo se admiten PDF, JPG o PNG.'
+    case 'FILE_TOO_LARGE':
+      return 'El archivo supera el tamaño máximo permitido.'
+    case 'FILE_REJECTED':
+      return 'El servidor rechazó el archivo al verificarlo. Prueba con otro.'
+    case 'FILE_NOT_UPLOADED':
+      return 'El archivo no llegó al almacenamiento. Inténtalo de nuevo.'
+    case 'FILE_KEY_MISMATCH':
+      return 'No pudimos verificar el archivo. Inténtalo de nuevo.'
+    case 'FILE_NOT_FOUND':
+      return 'Este caso no tiene ninguna evidencia.'
+    case 'UPLOAD_FAILED':
+      return 'Se interrumpió la subida. Comprueba la conexión e inténtalo de nuevo.'
     default:
       return 'Algo salió mal. Inténtalo de nuevo.'
   }

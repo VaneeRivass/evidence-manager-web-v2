@@ -100,3 +100,41 @@ export const api = {
 
   delete: <T = void>(path: string) => request<T>(path, { method: 'DELETE' }),
 }
+
+/** What the API answers when asked for an upload link (RF-10). */
+export type UploadTarget = { uploadUrl: string; key: string; expiresIn: number }
+
+/**
+ * The upload goes straight to storage — NOT through the API — and without
+ * credentials, so the session cookie never travels to Cloudflare.
+ * XMLHttpRequest, not fetch: only XHR reports upload progress in every browser,
+ * which is what the single progress bar (RF-17) needs.
+ */
+export function uploadToStorage(
+  url: string,
+  file: File,
+  onProgress: (fraction: number) => void,
+): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest()
+    xhr.open('PUT', url)
+    // Must match the content type the link was signed with.
+    xhr.setRequestHeader('Content-Type', file.type)
+    xhr.upload.onprogress = (event) => {
+      if (event.lengthComputable) {
+        onProgress(event.loaded / event.total)
+      }
+    }
+    xhr.onload = () => {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        resolve()
+      } else {
+        reject(new Error(`Storage rejected the upload (${xhr.status})`))
+      }
+    }
+    xhr.onerror = () => reject(new Error('Network error while uploading'))
+    xhr.onabort = () => reject(new Error('Upload aborted'))
+    // withCredentials stays false: the session cookie must never reach storage.
+    xhr.send(file)
+  })
+}
