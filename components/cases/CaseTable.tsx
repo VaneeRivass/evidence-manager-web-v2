@@ -1,0 +1,47 @@
+import Link from 'next/link'
+import { CaseStatusPill } from '@/components/cases/CaseStatusPill'
+import { FileChip } from '@/components/cases/FileChip'
+import { formatRelative } from '@/lib/format'
+import type { Case } from '@/lib/schemas'
+
+// The list with data. The whole row links to the case's detail, but the link is
+// a real <a> on the title (keyboard works).
+export function CaseTable({ cases }: { cases: Case[] }) {
+  return (
+    <div className="overflow-hidden rounded-2xl border border-line bg-card">
+      <table className="w-full border-collapse">
+        <thead>
+          <tr className="text-left text-xs text-muted">
+            <th className="px-4 py-3 font-semibold">Caso</th>
+            <th className="px-4 py-3 font-semibold">Estado</th>
+            <th className="px-4 py-3 font-semibold">Evidencia</th>
+            <th className="px-4 py-3 font-semibold">Actualizado</th>
+          </tr>
+        </thead>
+        <tbody>
+          {cases.map((item) => (
+            <tr key={item.id} className="border-t border-line transition hover:bg-canvas">
+              <td className="px-4 py-3.5">
+                <Link href={`/cases/${item.id}`} className="block">
+                  <span className="font-semibold text-ink">{item.title}</span>
+                  <span className="mt-0.5 block max-w-[42ch] truncate text-[12.5px] text-muted">
+                    {item.description}
+                  </span>
+                </Link>
+              </td>
+              <td className="px-4 py-3.5">
+                <CaseStatusPill status={item.status} />
+              </td>
+              <td className="px-4 py-3.5">
+                <FileChip name={item.fileName} size={item.fileSize} type={item.fileType} />
+              </td>
+              <td className="px-4 py-3.5 text-[13px] text-muted">
+                {formatRelative(item.updatedAt)}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}
