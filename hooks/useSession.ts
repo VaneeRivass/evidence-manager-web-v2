@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { api } from '@/lib/api'
+import { clientMessages } from '@/lib/messages.es'
 import type { LoginInput, RegisterInput } from '@/lib/schemas'
 
 /** Who is signed in, the only shape the client ever learns (RF-02, RF-03). */
@@ -50,7 +51,6 @@ export function useLogout() {
       queryClient.clear()
       router.replace('/login')
     },
-    onError: () =>
-      toast.error('No pudimos cerrar la sesión. Inténtalo de nuevo.'),
+    onError: () => toast.error(clientMessages.logoutFailed),
   })
 }

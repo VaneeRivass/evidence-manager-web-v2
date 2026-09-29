@@ -9,7 +9,7 @@ import { Button } from '@/components/common/Button'
 import { Modal } from '@/components/common/Modal'
 import { useDeleteCase } from '@/hooks/useCases'
 import { ApiError } from '@/lib/api'
-import { errorMessage } from '@/lib/messages.es'
+import { clientMessages, errorMessage } from '@/lib/messages.es'
 import type { Case } from '@/lib/schemas'
 
 // RF-20 · the confirmation names what is lost — the case and, if there is one,
@@ -38,7 +38,7 @@ export function DeleteCaseDialog({
       toast.error(
         error instanceof ApiError
           ? errorMessage(error.code, error.params)
-          : 'No pudimos eliminar el caso. Inténtalo de nuevo.',
+          : clientMessages.deleteCaseFailed,
       )
     }
   }

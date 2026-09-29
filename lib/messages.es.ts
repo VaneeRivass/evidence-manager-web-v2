@@ -61,3 +61,10 @@ export function errorMessage(code: string, params?: Params): string {
       return 'Algo salió mal. Inténtalo de nuevo.'
   }
 }
+
+// Failures the API never saw: the request did not arrive, so there is no code to
+// switch on. The client owns these texts, so they live here too.
+export const clientMessages = {
+  logoutFailed: 'No pudimos cerrar la sesión. Inténtalo de nuevo.',
+  deleteCaseFailed: 'No pudimos eliminar el caso. Inténtalo de nuevo.',
+}
