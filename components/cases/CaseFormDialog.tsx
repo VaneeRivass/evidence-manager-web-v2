@@ -2,6 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { Field, fieldClass } from '@/components/common/Field'
 import { Modal } from '@/components/common/Modal'
@@ -39,6 +40,17 @@ export function CaseFormDialog({
     },
   })
 
+  // The dialog is always mounted: refresh its fields each time it opens, so an
+  // edit starts from the case's values and a new case starts empty.
+  useEffect(() => {
+    if (open) {
+      reset({
+        title: caseToEdit?.title ?? '',
+        description: caseToEdit?.description ?? '',
+      })
+    }
+  }, [open, caseToEdit, reset])
+
   const onSubmit = handleSubmit(async (values) => {
     try {
       if (caseToEdit) {
@@ -49,7 +61,6 @@ export function CaseFormDialog({
         onClose()
         router.push(`/cases/${created.id}`)
       }
-      reset({ title: '', description: '' })
     } catch (error) {
       applyApiError(error, setError)
     }

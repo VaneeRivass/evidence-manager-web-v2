@@ -39,7 +39,7 @@ export function Modal({
       className="m-auto w-[min(460px,92vw)] rounded-3xl bg-card p-7 text-ink shadow-2xl backdrop:bg-ink/45"
     >
       <div className="flex items-start justify-between gap-4">
-        <h2 className="text-[19px] font-extrabold tracking-tight">{title}</h2>
+        <h2 className="break-words text-[19px] font-extrabold tracking-tight">{title}</h2>
         <button
           type="button"
           onClick={onClose}

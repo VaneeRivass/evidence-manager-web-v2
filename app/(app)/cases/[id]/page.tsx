@@ -52,7 +52,7 @@ export default function CaseDetailPage() {
       {item ? (
         <>
           <div className="mt-5 grid gap-4 lg:grid-cols-[1.45fr_1fr] lg:items-start">
-            <section className="grid gap-4 rounded-3xl border border-line bg-card p-6">
+            <section className="grid min-w-0 gap-4 rounded-3xl border border-line bg-card p-6">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <CaseStatusPill status={item.status} />
                 <div className="flex flex-wrap gap-2">
@@ -100,10 +100,10 @@ export default function CaseDetailPage() {
                 </div>
               </div>
 
-              <h1 className="text-[26px] font-extrabold leading-tight tracking-tight">
+              <h1 className="break-words text-[26px] font-extrabold leading-tight tracking-tight">
                 {item.title}
               </h1>
-              <p className="max-w-[62ch] leading-relaxed text-slate-ink">
+              <p className="max-w-[62ch] break-words leading-relaxed text-slate-ink">
                 {item.description}
               </p>
               <div className="flex flex-wrap gap-4 border-t border-line pt-3.5 text-[12.5px] text-muted">
@@ -122,7 +122,7 @@ export default function CaseDetailPage() {
               </div>
             </section>
 
-            <section className="grid gap-4 rounded-3xl border border-line bg-card p-6">
+            <section className="grid min-w-0 gap-4 rounded-3xl border border-line bg-card p-6">
               <h2 className="text-[15px] font-bold">Evidencia</h2>
               {item.fileName ? (
                 <FileChip

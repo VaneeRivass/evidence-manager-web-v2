@@ -23,7 +23,9 @@ export function CaseTable({ cases }: { cases: Case[] }) {
             <tr key={item.id} className="border-t border-line transition hover:bg-canvas">
               <td className="px-4 py-3.5">
                 <Link href={`/cases/${item.id}`} className="block">
-                  <span className="font-semibold text-ink">{item.title}</span>
+                  <span className="block max-w-[42ch] truncate font-semibold text-ink">
+                    {item.title}
+                  </span>
                   <span className="mt-0.5 block max-w-[42ch] truncate text-[12.5px] text-muted">
                     {item.description}
                   </span>
