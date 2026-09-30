@@ -9,8 +9,8 @@ import type { Case } from '@/lib/schemas'
 // real <a> on the title (keyboard works).
 export function CaseTable({ cases }: { cases: Case[] }) {
   return (
-    <div className="overflow-hidden rounded-2xl border border-line bg-card">
-      <table className="w-full table-fixed border-collapse">
+    <div className="overflow-x-auto rounded-2xl border border-line bg-card">
+      <table className="w-full min-w-[640px] table-fixed border-collapse">
         <thead>
           <tr className="text-left text-xs text-muted">
             <th className="w-[44%] px-4 py-3 font-semibold">Caso</th>
