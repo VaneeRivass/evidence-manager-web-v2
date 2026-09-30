@@ -41,7 +41,9 @@ export default function CasesPage() {
           <h1 className="text-2xl font-extrabold tracking-tight">Mis casos</h1>
           {!isPending && !isError && data ? (
             <p className="mt-1 text-[13px] text-muted">
-              {data.total} {data.total === 1 ? 'caso' : 'casos'}
+              {data.total > data.items.length
+                ? `Mostrando los ${data.items.length} más recientes de ${data.total}`
+                : `${data.total} ${data.total === 1 ? 'caso' : 'casos'}`}
             </p>
           ) : null}
         </div>
