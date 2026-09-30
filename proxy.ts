@@ -10,14 +10,20 @@ const SESSION_COOKIE = 'session'
 // "middleware"; that name is deprecated). It lives at the project root, a
 // sibling of app/: inside app/ Next does not run it.
 export function proxy(request: NextRequest) {
-  const { pathname } = request.nextUrl
+  const { pathname, searchParams } = request.nextUrl
   const signedIn = request.cookies.has(SESSION_COOKIE)
   const isAuthRoute = pathname === '/login' || pathname === '/register'
+  // A session the API rejected: the cookie is still there but no longer valid,
+  // and the client cannot delete an httpOnly cookie. Without this marker, /login
+  // would bounce back to /cases forever — a loop. With it, the form is reachable
+  // so the person can sign in again.
+  const sessionExpired =
+    pathname === '/login' && searchParams.has('expirada')
 
   if (!signedIn && !isAuthRoute) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
-  if (signedIn && isAuthRoute) {
+  if (signedIn && isAuthRoute && !sessionExpired) {
     return NextResponse.redirect(new URL('/cases', request.url))
   }
   return NextResponse.next()

@@ -71,13 +71,29 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
   if (!response.ok) {
     // Every error the API sends is RFC 9457. Anything else is unexpected and
     // surfaces as a generic code the notices can still show.
-    throw isProblemDetails(body)
-      ? new ApiError(body)
-      : new ApiError({
+    const problem = isProblemDetails(body)
+      ? body
+      : {
           title: response.statusText,
           status: response.status,
           code: 'UNEXPECTED_ERROR',
-        })
+        }
+    const error = new ApiError(problem)
+
+    // The session the API rejected: the cookie is in the browser but no longer
+    // valid, and the client cannot delete an httpOnly cookie. Go to the login
+    // screen with the marker the proxy honours, so it does not bounce back here.
+    // A wrong password is also a 401 (INVALID_CREDENTIALS) and must NOT redirect:
+    // that one is shown next to the field.
+    if (
+      error.status === 401 &&
+      error.code === 'UNAUTHENTICATED' &&
+      typeof window !== 'undefined'
+    ) {
+      window.location.assign('/login?expirada=1')
+    }
+
+    throw error
   }
 
   return body as T

@@ -3,16 +3,25 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { AuthField } from '@/components/auth/AuthField'
 import { Button } from '@/components/common/Button'
 import { useLogin } from '@/hooks/useSession'
 import { applyApiError } from '@/lib/form'
+import { errorMessage } from '@/lib/messages.es'
 import { loginSchema, type LoginInput } from '@/lib/schemas'
 
 export function LoginForm() {
   const router = useRouter()
   const login = useLogin()
+
+  // The proxy sends us here with ?expirada=1 when the API rejected a stale
+  // session, so the person understands why they must sign in again.
+  const [expired, setExpired] = useState(false)
+  useEffect(() => {
+    setExpired(new URLSearchParams(window.location.search).has('expirada'))
+  }, [])
 
   const {
     register,
@@ -41,6 +50,12 @@ export function LoginForm() {
           Usa el correo con el que te registraste.
         </p>
       </div>
+
+      {expired ? (
+        <p className="rounded-xl border border-warning/40 bg-warning/10 px-3 py-2 text-[13px] text-ink">
+          {errorMessage('UNAUTHENTICATED')}
+        </p>
+      ) : null}
 
       <AuthField
         id="email"
