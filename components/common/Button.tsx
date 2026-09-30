@@ -23,16 +23,21 @@ const sizes: Record<Size, string> = {
   lg: 'px-5 py-2.5 text-sm',
 }
 
+// The class string, reusable on something that is not a <button> — a <Link>, for
+// instance — without copying the classes around.
+export function buttonClass(
+  variant: Variant = 'primary',
+  size: Size = 'md',
+  className = '',
+) {
+  return `${base} ${variants[variant]} ${sizes[size]} ${className}`
+}
+
 export function Button({
   variant = 'primary',
   size = 'md',
   className = '',
   ...props
 }: { variant?: Variant; size?: Size } & ButtonHTMLAttributes<HTMLButtonElement>) {
-  return (
-    <button
-      className={`${base} ${variants[variant]} ${sizes[size]} ${className}`}
-      {...props}
-    />
-  )
+  return <button className={buttonClass(variant, size, className)} {...props} />
 }
