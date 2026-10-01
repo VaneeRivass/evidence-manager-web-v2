@@ -35,7 +35,7 @@ export default function CasesPage() {
   }
 
   return (
-    <main className="mx-auto w-full max-w-5xl p-8">
+    <main className="mx-auto w-full max-w-5xl p-4 sm:p-8">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h1 className="text-2xl font-extrabold tracking-tight">Mis casos</h1>

@@ -15,11 +15,13 @@ export function Modal({
   open,
   onClose,
   title,
+  icon,
   children,
 }: {
   open: boolean
   onClose: () => void
   title: string
+  icon?: ReactNode
   children: ReactNode
 }) {
   return (
@@ -33,6 +35,7 @@ export function Modal({
     >
       <DialogContent className="w-[min(460px,92vw)] bg-card p-7 sm:max-w-[460px]">
         <DialogHeader>
+          {icon ? <div>{icon}</div> : null}
           <DialogTitle className="[overflow-wrap:anywhere] text-[19px] font-extrabold tracking-tight text-ink">
             {title}
           </DialogTitle>

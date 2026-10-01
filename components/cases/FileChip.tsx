@@ -15,6 +15,10 @@ function iconFor(type: string | null): { label: string; color: string } {
   return { label: 'DOC', color: '#3e4675' }
 }
 
+export function fileTypeLabel(type: string | null): string {
+  return iconFor(type).label
+}
+
 export function FileIcon({ type }: { type: string | null }) {
   const { label, color } = iconFor(type)
 

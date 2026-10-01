@@ -1,22 +1,19 @@
 'use client'
 
-import { ArrowLeft, Lock, Pencil, Trash2, Unlock } from 'lucide-react'
+import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { useState, type ReactNode } from 'react'
 import { CaseFormDialog } from '@/components/cases/CaseFormDialog'
-import { CaseStatusPill } from '@/components/cases/CaseStatusPill'
 import { CasesError } from '@/components/cases/CasesError'
+import { CaseSummary } from '@/components/cases/CaseSummary'
 import { DeleteCaseDialog } from '@/components/cases/DeleteCaseDialog'
 import { EvidencePanel } from '@/components/cases/EvidencePanel'
-import { Button } from '@/components/common/Button'
 import { useCase } from '@/hooks/useCase'
 import { useUpdateCase } from '@/hooks/useCases'
-import { formatRelative } from '@/lib/format'
 
-// /cases/[id] · the detail screen. It reads one case, and from here a person
-// edits it, changes its state or deletes it. Attaching evidence arrives in
-// WEB #8.
+// /cases/[id] · the detail screen. It reads one case; from here a person edits
+// it, changes its state, deletes it, and attaches or downloads its evidence.
 export default function CaseDetailPage() {
   const { id } = useParams<{ id: string }>()
   const { data: item, isPending, isError, error, refetch } = useCase(id)
@@ -42,78 +39,18 @@ export default function CaseDetailPage() {
     content = (
       <>
         <div className="mt-5 grid gap-4 lg:grid-cols-[1.45fr_1fr] lg:items-start">
-          <section className="grid min-w-0 gap-4 rounded-3xl border border-line bg-card p-6">
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <CaseStatusPill status={item.status} />
-              <div className="flex flex-wrap gap-2">
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setEditOpen(true)}
-                >
-                  <Pencil className="size-4" />
-                  Editar
-                </Button>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  disabled={updateCase.isPending}
-                  onClick={() =>
-                    updateCase.mutate({
-                      id: item.id,
-                      input: {
-                        status: item.status === 'OPEN' ? 'CLOSED' : 'OPEN',
-                      },
-                    })
-                  }
-                >
-                  {item.status === 'OPEN' ? (
-                    <>
-                      <Lock className="size-4" />
-                      Cerrar caso
-                    </>
-                  ) : (
-                    <>
-                      <Unlock className="size-4" />
-                      Reabrir
-                    </>
-                  )}
-                </Button>
-                <Button
-                  type="button"
-                  variant="dangerOutline"
-                  size="sm"
-                  onClick={() => setDeleteOpen(true)}
-                >
-                  <Trash2 className="size-4" />
-                  Eliminar
-                </Button>
-              </div>
-            </div>
-
-            <h1 className="[overflow-wrap:anywhere] text-[26px] font-extrabold leading-tight tracking-tight">
-              {item.title}
-            </h1>
-            <p className="max-w-[62ch] [overflow-wrap:anywhere] leading-relaxed text-slate-ink">
-              {item.description}
-            </p>
-            <div className="flex flex-wrap gap-4 border-t border-line pt-3.5 text-[12.5px] text-muted">
-              <span>
-                Creado{' '}
-                <b className="font-semibold text-ink">
-                  {formatRelative(item.createdAt)}
-                </b>
-              </span>
-              <span>
-                Actualizado{' '}
-                <b className="font-semibold text-ink">
-                  {formatRelative(item.updatedAt)}
-                </b>
-              </span>
-            </div>
-          </section>
+          <CaseSummary
+            item={item}
+            onEdit={() => setEditOpen(true)}
+            onToggleStatus={() =>
+              updateCase.mutate({
+                id: item.id,
+                input: { status: item.status === 'OPEN' ? 'CLOSED' : 'OPEN' },
+              })
+            }
+            onDelete={() => setDeleteOpen(true)}
+            statusPending={updateCase.isPending}
+          />
 
           <section className="grid min-w-0 gap-4 self-start rounded-3xl border border-line bg-card p-6">
             <h2 className="text-[15px] font-bold">Evidencia</h2>
@@ -136,7 +73,7 @@ export default function CaseDetailPage() {
   }
 
   return (
-    <main className="mx-auto w-full max-w-4xl p-8">
+    <main className="mx-auto w-full max-w-4xl p-4 sm:p-8">
       <Link
         href="/cases"
         className="inline-flex items-center gap-1.5 text-[13px] text-muted transition hover:text-ink"

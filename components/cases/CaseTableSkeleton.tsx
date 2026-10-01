@@ -21,10 +21,10 @@ function SkeletonRow(): ReactNode {
       <td className="px-4 py-3.5">
         <Skeleton className="h-5 w-16" />
       </td>
-      <td className="px-4 py-3.5">
+      <td className="hidden px-4 py-3.5 md:table-cell">
         <Skeleton className="h-3 w-3/4" />
       </td>
-      <td className="px-4 py-3.5">
+      <td className="hidden px-4 py-3.5 sm:table-cell">
         <Skeleton className="h-3 w-12" />
       </td>
     </tr>
@@ -34,13 +34,17 @@ function SkeletonRow(): ReactNode {
 export function CaseTableSkeleton() {
   return (
     <div className="overflow-x-auto rounded-2xl border border-line bg-card">
-      <table className="w-full min-w-[640px] table-fixed border-collapse">
+      <table className="w-full table-fixed border-collapse">
         <thead>
           <tr className="text-left text-xs text-muted">
-            <th className="w-[44%] px-4 py-3 font-semibold">Caso</th>
-            <th className="w-[14%] px-4 py-3 font-semibold">Estado</th>
-            <th className="w-[28%] px-4 py-3 font-semibold">Evidencia</th>
-            <th className="w-[14%] px-4 py-3 font-semibold">Actualizado</th>
+            <th className="w-[46%] px-4 py-3 font-semibold">Caso</th>
+            <th className="w-[16%] px-4 py-3 font-semibold">Estado</th>
+            <th className="hidden w-[24%] px-4 py-3 font-semibold md:table-cell">
+              Evidencia
+            </th>
+            <th className="hidden w-[14%] px-4 py-3 font-semibold sm:table-cell">
+              Actualizado
+            </th>
           </tr>
         </thead>
         <tbody>

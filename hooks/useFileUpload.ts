@@ -1,6 +1,8 @@
 import { useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
-import { api, uploadToStorage, type UploadTarget } from '@/lib/api'
+import { toast } from 'sonner'
+import { ApiError, api, uploadToStorage, type UploadTarget } from '@/lib/api'
+import { errorMessage } from '@/lib/messages.es'
 import type { Case } from '@/lib/schemas'
 
 // What the person sees as one action, in phases: asking for the link, uploading
@@ -66,6 +68,14 @@ export function useDownloadEvidence(caseId: string) {
         expiresIn: number
       }>(`/api/cases/${caseId}/file/download-url`)
       window.location.assign(downloadUrl)
+    } catch (error) {
+      // Asking for the link can fail too. Say so, instead of leaving an
+      // unhandled rejection with no feedback.
+      toast.error(
+        error instanceof ApiError
+          ? errorMessage(error.code, error.params)
+          : errorMessage('UNEXPECTED_ERROR'),
+      )
     } finally {
       setDownloading(false)
     }
