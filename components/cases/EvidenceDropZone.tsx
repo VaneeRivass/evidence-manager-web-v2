@@ -70,9 +70,9 @@ export function EvidenceDropZone({
       />
 
       {fieldError ? (
-        <p className="flex items-center gap-2 text-[13px] text-danger">
-          <AlertTriangle className="size-4 shrink-0" />
-          {fieldError}
+        <p className="flex items-start gap-2 text-left text-[13px] text-danger">
+          <AlertTriangle className="mt-0.5 size-4 shrink-0" />
+          <span className="[overflow-wrap:anywhere]">{fieldError}</span>
         </p>
       ) : null}
     </div>
