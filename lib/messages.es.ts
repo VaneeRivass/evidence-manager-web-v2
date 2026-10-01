@@ -55,6 +55,10 @@ export function errorMessage(code: string, params?: Params): string {
       return 'No pudimos verificar el archivo. Inténtalo de nuevo.'
     case 'FILE_NOT_FOUND':
       return 'Este caso no tiene ninguna evidencia.'
+    case 'CASE_NOT_FOUND':
+      return 'No encontramos este caso.'
+    case 'CASE_FORBIDDEN':
+      return 'No tienes acceso a este caso.'
     case 'UPLOAD_FAILED':
       return 'Se interrumpió la subida. Comprueba la conexión e inténtalo de nuevo.'
     default:

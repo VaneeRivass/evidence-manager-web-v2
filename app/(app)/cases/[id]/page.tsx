@@ -11,6 +11,8 @@ import { DeleteCaseDialog } from '@/components/cases/DeleteCaseDialog'
 import { EvidencePanel } from '@/components/cases/EvidencePanel'
 import { useCase } from '@/hooks/useCase'
 import { useUpdateCase } from '@/hooks/useCases'
+import { ApiError } from '@/lib/api'
+import { errorMessage } from '@/lib/messages.es'
 
 // /cases/[id] · the detail screen. It reads one case; from here a person edits
 // it, changes its state, deletes it, and attaches or downloads its evidence.
@@ -30,9 +32,20 @@ export default function CaseDetailPage() {
       </div>
     )
   } else if (isError) {
+    const code = error instanceof ApiError ? error.code : undefined
+    const caseProblem = code === 'CASE_FORBIDDEN' || code === 'CASE_NOT_FOUND'
     content = (
       <div className="mt-5">
-        <CasesError error={error} onRetry={() => refetch()} />
+        <CasesError
+          error={error}
+          title="No pudimos abrir este caso"
+          message={
+            caseProblem
+              ? errorMessage(code ?? '')
+              : 'Puede ser un problema de conexión. Vuelve a intentarlo.'
+          }
+          onRetry={caseProblem ? undefined : () => refetch()}
+        />
       </div>
     )
   } else if (item) {
